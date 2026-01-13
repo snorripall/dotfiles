@@ -1,9 +1,9 @@
 # Agent Developer Setup
 This is my personal configuration and will change over time based on my needs and preferences. 
 
-This is meant to be a starting point for your own configuration. Feel free to modify it to suit your needs.
+This can be a starting point for your own configuration. Feel free to modify it to suit your needs.
 
-If you wish to make improvement such as agents or skills, feel free to send me a pull request. 
+If you wish to contribute any improvement such as agents or skills, feel free to send me a pull request. Just make sure you explain in the pull request what problem you are trying to solve.
 
 Use at your own risk. I take zero responsibility. 
 
@@ -75,7 +75,8 @@ I believe that [their vision for the editor](https://zed.dev/blog/sequoia-backs-
 ### [Oh My OpenCode](https://github.com/code-yeongyu/oh-my-opencode)
 Oh My OpenCode is the real reason I found OpenCode acceptable. 
 
-This replaces OpenCodes default agents. It is far superior than what OpenCode has.
+This replaces OpenCodes default agents. It is far superior than what OpenCode has. I recommend having a look at their repo to see what features they offer. 
+
 ### [Taskmaster AI](https://github.com/eyaltoledano/claude-task-master)
 I am using Taskmaster AI to manage tasks. It is a great tool that fulfills most of my needs and makes running OpenCode autonomously much easier
 
@@ -83,10 +84,8 @@ I am using Taskmaster AI to manage tasks. It is a great tool that fulfills most 
 /ralph-loop Please finish all the tasks in Task Master. You are not finished until all tasks are marked as done. 
 ```
 
-
 # API Keys
 I store all my API keys in my environment. 
-
 
 - `XAI_API_KEY`
 - `MISTRAL_API_KEY`
