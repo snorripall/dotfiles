@@ -6,37 +6,50 @@
     "completion_promise": "<promise>DONE</promise>"
   },
   "agents": {
+    "build": {
+      "model": "xai/grok-code-fast-1"
+    },
+    "plan": {
+      "model": "xai/grok-4-1-fast"
+    },
     "Sisyphus": {
-      "model": "grok-4-1-fast-reasoning",
-      "temperature": 0.35,
-      "description": "Main orchestrator & Ralph Loop driver – maximal reasoning for complex coordination"
+      "model": "xai/grok-code-fast-1"
+    },
+    "Sisyphus-Junior": {
+      "model": "xai/grok-code-fast-1"
+    },
+    "OpenCode-Builder": {
+      "model": "xai/grok-code-fast-1"
+    },
+    "Prometheus (Planner)": {
+      "model": "xai/grok-4-1-fast"
+    },
+    "Metis (Plan Consultant)": {
+      "model": "xai/grok-4-1-fast"
+    },
+    "Momus (Plan Reviewer)": {
+      "model": "xai/grok-4-1-fast"
     },
     "oracle": {
-      "model": "grok-4-1-fast-reasoning",
-      "temperature": 0.4
-    },
-    "explore": {
-      "model": "grok-4-1-fast-reasoning",
-      "temperature": 0.5,
-      "description": "Deep research & exploration – leverages strong reasoning capabilities"
+      "model": "xai/grok-4-1-fast"
     },
     "librarian": {
-      "model": "grok-code-fast-1",
-      "temperature": 0.3
+      "model": "xai/grok-4-1-fast"
+    },
+    "explore": {
+      "model": "xai/grok-4-1-fast"
     },
     "frontend-ui-ux-engineer": {
-      "model": "grok-code-fast-1",
-      "temperature": 0.6,
-      "description": "UI/UX + frontend work – fast iteration on visual/code tasks"
+      "model": "xai/grok-code-fast-1"
     },
     "document-writer": {
-      "model": "grok-code-fast-1",
-      "temperature": 0.45
+      "model": "xai/grok-4-1-fast"
     },
     "multimodal-looker": {
-      "model": "grok-4-1-fast-reasoning",
-      "temperature": 0.5,
-      "description": "Vision + multimodal analysis – reasoning variant for better image/code understanding"
+      "model": "xai/grok-4-1-fast"
+    },
+    "orchestrator-sisyphus": {
+      "model": "xai/grok-4-1-fast"
     }
   },
   "disabled_agents": [],

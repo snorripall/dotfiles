@@ -1,18 +1,16 @@
 {
-  "plugin": ["oh-my-opencode"],
-  "provider": {
-    "mistral": {
-      "npm": "@ai-sdk/mistral",
-      "name": "Mistral AI",
-      "models": {
-        "devstral2": {
-          "name": "Devstral 2"
-        },
-        "mistral-large-latest": {
-          "name": "Mistral Large"
-        }
-      }
+  "plugin": ["oh-my-opencode@3.0.0-beta.5"],
+  "$schema": "https://opencode.ai/config.json",
+  "model": "xai/grok-code-fast-1",
+  "mcp": {
+    "Taskmaster AI": {
+      "type": "local",
+      "command": ["npx", "-y", "--package=task-master-ai", "task-master-ai"],
+      "enabled": true
+    },
+    "playwright": {
+      "type": "local",
+      "command": ["npx", "@playwright/mcp@latest"]
     }
-  },
-  "$schema": "https://opencode.ai/config.json"
+  }
 }

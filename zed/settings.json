@@ -23,7 +23,7 @@
       "args": ["-y", "--package=task-master-ai", "task-master-ai"],
     },
   },
-  "theme": "Monokai Night Soft",
+  "theme": "Monokai Night",
   "base_keymap": "SublimeText",
   "ui_font_size": 16,
   "buffer_font_size": 18,
