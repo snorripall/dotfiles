@@ -5,52 +5,65 @@
     "default_max_iterations": 100,
     "completion_promise": "<promise>DONE</promise>"
   },
+  "git_master": {
+    "commit_footer": false,
+    "include_co_authored_by": false
+  },
   "agents": {
     "build": {
-      "model": "xai/grok-code-fast-1"
+      "model": "kimi-for-coding/k2p5"
     },
     "plan": {
-      "model": "xai/grok-4-1-fast"
+      "model": "kimi-for-coding/k2p5"
     },
-    "Sisyphus": {
-      "model": "xai/grok-code-fast-1"
+    "sisyphus": {
+      "model": "kimi-for-coding/k2p5"
     },
-    "Sisyphus-Junior": {
-      "model": "xai/grok-code-fast-1"
+    "sisyphus-junior": {
+      "model": "kimi-for-coding/k2p5"
     },
     "OpenCode-Builder": {
-      "model": "xai/grok-code-fast-1"
+      "model": "kimi-for-coding/k2p5"
     },
-    "Prometheus (Planner)": {
-      "model": "xai/grok-4-1-fast"
+    "prometheus": {
+      "model": "kimi-for-coding/k2p5"
     },
-    "Metis (Plan Consultant)": {
-      "model": "xai/grok-4-1-fast"
+    "metis": {
+      "model": "kimi-for-coding/k2p5"
     },
-    "Momus (Plan Reviewer)": {
-      "model": "xai/grok-4-1-fast"
+    "momus": {
+      "model": "kimi-for-coding/k2p5"
     },
     "oracle": {
-      "model": "xai/grok-4-1-fast"
+      "model": "kimi-for-coding/k2p5"
     },
     "librarian": {
-      "model": "xai/grok-4-1-fast"
+      "model": "kimi-for-coding/k2p5"
     },
     "explore": {
-      "model": "xai/grok-4-1-fast"
+      "model": "kimi-for-coding/k2p5"
     },
     "frontend-ui-ux-engineer": {
-      "model": "xai/grok-4-1-fast"
+      "model": "kimi-for-coding/k2p5"
     },
     "document-writer": {
-      "model": "xai/grok-4-1-fast"
+      "model": "kimi-for-coding/k2p5"
     },
     "multimodal-looker": {
-      "model": "xai/grok-4-1-fast"
+      "model": "kimi-for-coding/k2p5"
     },
-    "orchestrator-sisyphus": {
-      "model": "xai/grok-4-1-fast"
+    "atlas": {
+      "model": "kimi-for-coding/k2p5"
     }
+  },
+  "categories": {
+    "visual-engineering": { "model": "kimi-for-coding/k2p5" },
+    "ultrabrain": { "model": "kimi-for-coding/k2p5" },
+    "artistry": { "model": "kimi-for-coding/k2p5" },
+    "quick": { "model": "kimi-for-coding/k2p5" },
+    "unspecified-low": { "model": "kimi-for-coding/k2p5" },
+    "unspecified-high": { "model": "kimi-for-coding/k2p5" },
+    "writing": { "model": "kimi-for-coding/k2p5" }
   },
   "disabled_agents": [],
   "disabled_hooks": []
