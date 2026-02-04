@@ -19,103 +19,52 @@ Given the programming language you are working with, ignore any rules that make 
 - Design for testing: Structure code so business logic can be unit-tested without UI or database dependencies.
 - Use events for decoupling: Apply event-driven patterns for communication across concerns instead of direct calls.
 
-## Task management
-These are instructions on how you should manage tasks with the help of Taskmaster MCP. 
-If you change the state of a main task to done without all subtasks being done, you will not be able to change the state of a subtask. 
+## Git Workflow
 
-### Basic Taskmaster Cycle
-1. **List Tasks**
-   `task-master list` or `get_tasks` → View current tasks, status, and IDs
-2. **Select Next**
-   `task-master next` or `next_task` → Get the recommended next task
-3. **View Details**
-   `task-master show <id>` or `get_task` → Read full task description
-4. **Break Down**
-   `task-master expand <id>` → Create subtasks for complex work
-5. **Implement**
-   Write code, tests, documentation, etc.
-6. **Log Progress**
-   `task-master update-subtask` → Record findings, decisions, blockers
-7. **Mark Complete**
-   `task-master set-status <id> done` → Only when truly finished & verified
-8. **Repeat**
+### Mandatory Commit Rule
+**ALWAYS commit completed, tested features. Never leave uncommitted code.**
 
-### Adding new tasks
-- If you are asked to add an individual task then you just add a regular task. 
-- If you are asked to add a product requirements document, make sure you follow the correct procedure and remember to give it a meaningful tag name. 
+### When to Commit
+- **After completing any feature or task** that has been implemented and tested
+- **Before switching contexts** (moving to a different task or project)
+- **At the end of a work session** if any changes exist
+- **After fixing a bug** once verified working
 
-### Task Complexity Analysis
-- Run `analyze_project_complexity` / `task-master analyze-complexity --research` for analysis
-- Review complexity report via `complexity_report` / `task-master complexity-report`
-- Focus on high-complexity tasks (8-10) for detailed breakdown
-- Use analysis results for appropriate subtask allocation
+### Commit Process
+1. **Check for git repository**: Run `git status` to verify you're in a git repo
+   - If error "not a git repository": Run `git init` to create a new repo
+   - If error "not a git repository": Run `git init` to create a new repo
+2. **Ensure .gitignore exists**: Check if `.gitignore` file exists
+   - If missing: Create a sensible `.gitignore` for the project type (Node.js, Python, Rust, etc.)
+   - Include: secrets, build artifacts, dependencies, IDE files, OS files
+3. **Review changes**: Check `git status` and `git diff` to understand what changed
+4. **Stage selectively**: Add only relevant files with `git add <file>` (avoid `git add .` unless certain)
+5. **Write descriptive message**: Follow conventional commit format
+   - `feat: add user authentication endpoint`
+   - `fix: resolve null pointer in payment processing`
+   - `refactor: extract validation logic into separate module`
+6. **Verify commit**: Run `git status` to confirm clean working directory
 
-### Task Breakdown Process
-- Use `expand_task` / `task-master expand --id=<id>` with complexity report
-- Use `--num=<number>` to specify explicit subtask count
-- Add `--research` flag for research-backed expansion
-- Add `--force` flag to replace existing subtasks
-- Use `--prompt="<context>"` for additional context
-- Use `expand_all` for multiple pending tasks
+### Commit Message Format
+```
+<type>: <short description>
 
-### Implementation Drift Handling
-- When implementation differs from plan, use `update` / `task-master update --from=<id> --prompt="..." --research`
-- Use `update_task` / `task-master update-task --id=<id> --prompt="..." --research` for single tasks
+[optional body explaining why and what]
 
-### Iterative Subtask Implementation
-1. **Preparation**: Use `get_task` to understand subtask goals
-2. **Exploration**: Identify files, functions, and code changes needed
-3. **Log Plan**: Use `update_subtask` to document detailed implementation plan
-4. **Verify Plan**: Confirm logged details with `get_task`
-5. **Begin Implementation**: Set status to `in-progress`
-6. **Refine Progress**: Regularly log findings with `update_subtask`
-7. **Review & Update Rules**: Create/modify rules for new patterns
-8. **Mark Complete**: Set status to `done`
-9. **Commit Changes**: Use descriptive commit messages
-10. **Proceed**: Identify next task with `next_task`
+[optional footer with issue references]
+```
 
-### Task Status Management
-- Use 'pending' for ready tasks
-- Use 'in-progress' for active work
-- Use 'done' for completed and verified tasks
-- Use 'deferred' for postponed tasks
+Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
 
-### Dependency Management
-- Use `add_dependency` / `task-master add-dependency` to add prerequisites
-- Use `remove_dependency` / `task-master remove-dependency` to remove dependencies
-- System prevents circular dependencies
-- Dependencies shown with status indicators
+### What NOT to Commit
+- Secrets (`.env`, API keys, credentials)
+- Generated files (build output, `node_modules`, `__pycache__`)
+- Temporary files (`.log`, `.tmp`)
+- IDE-specific files (unless team-agreed)
 
-### Task Reorganization
-- Use `move_task` / `task-master move --from=<id> --to=<id>` for restructuring
-- Supports moving tasks to subtasks, subtasks to tasks, reordering within parents
-- Validates moves to prevent data loss
-- Maintains dependency integrity
-
-### Tagged Task Contexts
-- Default to `master` context for most work
-- Create feature-specific tags for major initiatives (e.g., `feature-steam-integration`)
-- Use branch-based tags when working on git branches
-- Create experiment tags for risky changes
-- Isolate team member work to prevent conflicts
-- Parse PRDs into dedicated tags for complex features
-
-### When to Introduce Tags
-- **Git Feature Branches**: Create tag when user branches (e.g., `git checkout -b feature-x`)
-- **Team Collaboration**: Separate contexts for multi-developer work
-- **Experiments**: Sandbox risky changes in dedicated tags
-- **Large Features**: PRD-driven development in feature-specific tags
-- **Version-Based**: Different approaches for prototype vs. production work
-
-### Product Requirements Document-Driven Feature Development
-1. **Create Tag**: `add_tag feature-[name] --description="[description]"`
-2. **Draft PRD**: Collaborate on comprehensive requirements document
-3. **Parse PRD**: `parse_prd prd-file.txt --tag=feature-[name]`
-4. **Analyze & Expand**: Run complexity analysis and task expansion
-5. **Add Master Reference**: Create high-level task in master tag
-
-### Configuration Management
-- Use `.taskmaster/config.json` for model selections and parameters
-- Set API keys in `.env` (CLI) or MCP configuration files
-- Use `task-master models --setup` for configuration
-- Tagged system settings in config file
+### Verification Checklist
+Before considering a task complete:
+- [ ] All tests pass
+- [ ] Code reviewed (if required)
+- [ ] Changes committed with descriptive message
+- [ ] Working directory is clean (`git status` shows nothing to commit)
