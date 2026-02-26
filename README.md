@@ -60,6 +60,28 @@ This is the criteria I set for the ideal work environment. Not all criteria has 
 	* :x: Is accessible as a tool or MCP to any developer agent. 
 * :last_quarter_moon: Is embedded visually into my editor
 
+# My workflow
+I spend most of my time planning features and writing good detailed requirements documents. 
+
+* Ideation: 
+  * I start a conversation with a general agent like grok.com and get my idea across and structured in an abstract manner.
+  * When I'm happy with the results I ask it to summarise it up so an AI agent can make a plan out of it. 
+* Planning: 
+  * Prompt the agent: "Please take this and turn it into a executable plan. Ask me any clarifying questions". Then I paste in the text. 
+  * Work on it until I'm satisfied
+    
+* Execution
+  * Prompt the agent: "Ultrawork on the latest plan"
+  * Go work on my next Ideation while the agent delivers. 
+
+## Tips
+* Ideation: Make sure you tell it to only work on architecture and system design level. Not to think of what technology to use. Just pure problem solving on a system / product level. 
+* Planning: 
+  * To speed up your review, ask your agent to use Mermaid in the markdown files for better communication of any architecutre / system design. 
+    * I use Obsidian to view the plans from the agent before I finalize them
+  * Currently /start-work in Oh-My-OpenCode seem to not work as *I* would expect it to work. So I ask it to finalize the plan and remove it from draft mode and when that is done I switch over to the execution agent. 
+
+
 ## Tools I am currently using
 
 ### [Zed](https://zed.dev/)
@@ -79,6 +101,7 @@ I believe that [their vision for the editor](https://zed.dev/blog/sequoia-backs-
 Oh My OpenCode is the real reason I found OpenCode acceptable. 
 
 This replaces OpenCodes default agents. It is far superior than what OpenCode has. I recommend having a look at their repo to see what features they offer.
+
 
 # Configs
 
