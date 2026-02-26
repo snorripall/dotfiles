@@ -12,6 +12,7 @@ s
 !zed/*.json
 !opencode/*.*
 !README.md
+!fish/functions/*.fish
 
 #Ignore
 *backup*
