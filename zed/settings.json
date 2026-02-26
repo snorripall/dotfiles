@@ -43,15 +43,4 @@
       "model": "grok-4-1-fast-reasoning",
     },
   },
-  "agent_servers": {
-    "Goose 🪿": {
-      "type": "custom",
-      "command": "goose",
-      "args": ["acp"],
-      "env": {
-        "GOOSE_PROVIDER": "xai",
-        "GOOSE_MODEL": "grok-4-1-fast-reasoning",
-      },
-    },
-  },
 }

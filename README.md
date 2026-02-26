@@ -38,15 +38,14 @@ This is the criteria I set for the ideal work environment. Not all criteria has 
 * :white_check_mark: Can route between models based on prompts need
 * :white_check_mark: Robust permissions so it doesn't accidentally all my computer
 * :white_check_mark: Allows me to add custom agents and skills
-* Allows me to create my own developer workflow
+* :x: Allows me to create my own developer workflow
 	* In general
 	* For a project
 	* For a programming language
 * :white_check_mark: Must have [ACP](https://agentcommunicationprotocol.dev/introduction/welcome) / [A2A](https://a2a-protocol.org/latest/) support so it can run in side a compatible editor 
 * :white_check_mark: Has a nice CLI interface
 	* :white_check_mark: When I want to run something autonomously
-	* To use when I'm managing servers
-### Task Management
+	* :last_quarter_moon: To use when I'm managing servers
 * :white_check_mark: Can rewrite my prompt into a better feature description 
 * :white_check_mark: Can break down large tasks into smaller tasks
 * :white_check_mark: Can mange multiple set of complex features (Epics/Branches)
