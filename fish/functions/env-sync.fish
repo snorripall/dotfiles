@@ -6,10 +6,19 @@ function env-sync --description "Sync API keys from Bitwarden to environment"
             case --force -f
                 set force_overwrite true
             case --help -h
+                echo "Sync API keys from Bitwarden to environment"
+                echo ""
                 echo "Usage: env-sync [options]"
+                echo ""
                 echo "Options:"
-                echo "  -f, --force    Overwrite existing environment variables"
+                echo "  -f, --force    Force refresh all variables (even unchanged)"
                 echo "  -h, --help     Show this help message"
+                echo ""
+                echo "Behavior:"
+                echo "  - New variables: Always set"
+                echo "  - Changed values: Auto-updated (smart sync)"
+                echo "  - Unchanged values: Skipped"
+                echo "  - All values persisted to ~/.config/fish/conf.d/env-sync-vars.fish"
                 return 0
         end
     end
@@ -52,23 +61,35 @@ function env-sync --description "Sync API keys from Bitwarden to environment"
         set -l var_name (echo $line | cut -d'=' -f1)
         set -l var_value (echo $line | cut -d'=' -f2-)
         
-        # Check if variable already exists in current session
+        # Check if variable already exists and if value matches
         set -l exists false
+        set -l current_value ""
+        set -l needs_update false
+        
         if set -q $var_name
             set exists true
+            set current_value $$var_name
+            if test "$current_value" != "$var_value"
+                set needs_update true
+            end
         end
         
-        # Only set in current session if --force or doesn't exist
-        if test "$force_overwrite" = "true"; or test "$exists" = "false"
-            # Set in current session
+        # Set in current session if: doesn't exist, value differs, or --force
+        if test "$exists" = "false"
+            # New variable
             set -gx $var_name $var_value
-            if test "$exists" = "true" -a "$force_overwrite" = "true"
-                echo "  Overwritten: $var_name"
-            else if test "$exists" = "false"
-                echo "  Set: $var_name"
-            end
+            echo "  Set: $var_name"
+        else if test "$needs_update" = "true"
+            # Value differs from Bitwarden - smart update
+            set -gx $var_name $var_value
+            echo "  Updated (value changed): $var_name"
+        else if test "$force_overwrite" = "true"
+            # Same value but --force was used
+            set -gx $var_name $var_value
+            echo "  Refreshed: $var_name"
         else
-            echo "  Skipped (already exists): $var_name"
+            # Same value, no --force, skip
+            echo "  Skipped (unchanged): $var_name"
         end
         
         # Always persist to file (for next shell startup)
