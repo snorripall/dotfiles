@@ -1,4 +1,4 @@
-# Agent Developer Setup
+# My Dotfiles
 This is my personal configuration and will change over time based on my needs and preferences. 
 
 This can be a starting point for your own configuration. Feel free to modify it to suit your needs.
@@ -17,44 +17,48 @@ Use at your own risk. I take zero responsibility.
 This is the criteria I set for the ideal work environment. Not all criteria has been met yet. But It's getting close. 
 
 ### All tools
-* Runs on Aarch and MacOS
+* Runs on Linux and MacOS
+  * Linux: CachyOS + niri + Dank Material Shell
+  * MacOS: Latest OS on M2 
 * Open source
 * Allows me to bring my own API keys
 	* No lock-in models
 ### Editor
-* Super super duper fast
-* Works with large files
-* Extensible
-* Native tools made available via ACP
-* Native or extensions for 3rd party AI agents
-* Native support for ACP / A2A protocol
-* Git support
-### Developer Agent
-* Allows me to add custom 
-* Can route between models based on prompts need
-* Robust permissions so it doesn't accidentally all my computer
-* Allows me to add custom agents and skills
+* :white_check_mark: Super super duper fast
+* :white_check_mark: Works with large files
+* :white_check_mark: Extensible
+* :white_check_mark: Native tools made available via ACP
+* :white_check_mark: Native or extensions for 3rd party AI agents
+* Native support for Agent Protocols
+  * :white_check_mark: ACP
+  * A2A
+* :white_check_mark: Git support
+### Agent Harness
+* :white_check_mark: Custom models 
+* :white_check_mark: Can route between models based on prompts need
+* :white_check_mark: Robust permissions so it doesn't accidentally all my computer
+* :white_check_mark: Allows me to add custom agents and skills
 * Allows me to create my own developer workflow
 	* In general
 	* For a project
 	* For a programming language
-* Must have [ACP](https://agentcommunicationprotocol.dev/introduction/welcome) / [A2A](https://a2a-protocol.org/latest/) support so it can run in side a compatible editor 
-* Has a nice CLI interface
-	* When I want to run something autonomously
+* :white_check_mark: Must have [ACP](https://agentcommunicationprotocol.dev/introduction/welcome) / [A2A](https://a2a-protocol.org/latest/) support so it can run in side a compatible editor 
+* :white_check_mark: Has a nice CLI interface
+	* :white_check_mark: When I want to run something autonomously
 	* To use when I'm managing servers
 ### Task Management
-* Can rewrite my prompt into a better feature description 
-* Can break down large tasks into smaller tasks
-* Can mange multiple set of complex features (Epics/Branches)
-* Can identify the next logical task to pick up
-	* Can identify the dependency tree between all tasks and figure out what needs 
-* When I add a new task it should
-	* Updates the dependency tree
-	* Notify me of inconsistencies and conflicts
-		* Will suggest fixes 
-		* Allows me to modify suggestions or give my own 
-	* Is accessible as a tool or MCP to any developer agent. 
-* Is embedded visually into my editor
+* :white_check_mark: Can rewrite my prompt into a better feature description 
+* :white_check_mark: Can break down large tasks into smaller tasks
+* :white_check_mark: Can mange multiple set of complex features (Epics/Branches)
+* :white_check_mark: Can identify the next logical task to pick up
+	* :white_check_mark: Can identify the dependency tree between all tasks and figure out what order things should be done in
+* :last_quarter_moon: When I add a new task it should
+	* :last_quarter_moon: Updates the dependency tree
+	* :white_check_mark: Notify me of inconsistencies and conflicts
+		* :white_check_mark: Will suggest fixes 
+		* :white_check_mark: Allows me to modify suggestions or give my own 
+	* :x: Is accessible as a tool or MCP to any developer agent. 
+* :last_quarter_moon: Is embedded visually into my editor
 
 ## Tools I am currently using
 
@@ -70,21 +74,15 @@ I believe that [their vision for the editor](https://zed.dev/blog/sequoia-backs-
  
  But that may change in the future.
  
- [Goose](https://github.com/block/goose) technically came first due to it's robust architecture and overall extensibility. But the user experience and the functionality is unfortunately half-baked across the board. 
 ## Plugins and MCPs
 ### [Oh My OpenCode](https://github.com/code-yeongyu/oh-my-opencode)
 Oh My OpenCode is the real reason I found OpenCode acceptable. 
 
-This replaces OpenCodes default agents. It is far superior than what OpenCode has. I recommend having a look at their repo to see what features they offer. 
+This replaces OpenCodes default agents. It is far superior than what OpenCode has. I recommend having a look at their repo to see what features they offer.
 
-### [Taskmaster AI](https://github.com/eyaltoledano/claude-task-master)
-I am using Taskmaster AI to manage tasks. It is a great tool that fulfills most of my needs and makes running OpenCode autonomously much easier
+# Configs
 
-```
-/ralph-loop Please finish all the tasks in Task Master. You are not finished until all tasks are marked as done. 
-```
-
-# API Keys
+## API Keys
 I store all my API keys in my environment. 
 
 - `XAI_API_KEY`
@@ -94,3 +92,140 @@ I store all my API keys in my environment.
 - `GEMINI_API_KEY`
 
 etc.
+
+## Repository Structure
+
+```
+dotfiles/
+├── fish/                   # Fish shell configuration
+│   ├── config.fish        # Main fish config with git abbreviations
+│   └── functions/         # Fish functions
+│       └── env-sync.fish  # Bitwarden environment sync
+├── opencode/              # OpenCode configuration
+│   ├── opencode.json      # Main OpenCode config (MCPs, model)
+│   ├── oh-my-opencode.json # Custom agents and categories
+│   └── AGENTS.md          # Development guidelines for AI agents
+├── zed/                   # Zed editor configuration
+│   ├── settings.json      # Editor settings and agent config
+│   └── keymap.json        # Custom keybindings
+├── scripts/               # Setup scripts
+│   ├── setup-fish.sh      # Symlink fish config
+│   └── symlink-opencode.sh # Symlink OpenCode config
+└── README.md              # This file
+```
+
+## Shell Configuration (Fish)
+
+### Git Abbreviations
+
+The fish config includes convenient git abbreviations:
+- `g` → `git`
+- `gs` → `git status`
+- `gc` → `git clone`
+- `gpush` → `git push`
+- `gpull` → `git pull`
+
+### Environment Sync (`env-sync`)
+I need to be able to keep my keys in sync across operating systems. 
+This is a fish function that syncs API keys from Bitwarden to environment variables. 
+
+```bash
+# Sync API keys from Bitwarden to current session
+env-sync
+
+# Force refresh all variables (even unchanged)
+env-sync --force
+
+# Show help
+env-sync --help
+```
+
+**Requirements:**
+- Bitwarden CLI (`bw`) installed and logged in
+- `jq` for JSON parsing
+- An "API Keys" item in Bitwarden with custom fields for each API key
+
+**Behavior:**
+- New variables: Always set
+- Changed values: Auto-updated (smart sync)
+- Unchanged values: Skipped (unless `--force`)
+- All values persisted to `~/.config/fish/conf.d/env-sync-vars.fish` for future shells
+
+### SSH Keychain
+
+Automatically loads SSH keys via `keychain` on shell startup.
+
+## Setup Scripts
+### `scripts/setup-fish.sh` (linux)
+
+Symlinks fish configuration files:
+```bash
+./scripts/setup-fish.sh
+```
+
+This will:
+- Create `~/.config/fish/functions/` if needed
+- Symlink `env-sync.fish` to functions directory
+- Backup existing `config.fish` (if not a symlink)
+- Symlink `config.fish`
+
+### `scripts/symlink-opencode.sh` (linux+mac)
+
+Symlinks OpenCode configuration:
+```bash
+./scripts/symlink-opencode.sh
+```
+
+This symlinks all opencode config files to `~/.config/opencode/`.
+
+## OpenCode Configuration
+
+### Main Config (`opencode.json`)
+
+- **Plugin:** Oh My OpenCode (latest)
+- **Default Model:** xAI/grok-code-fast-1
+- **MCPs:**
+  - Playwright (enabled) - Browser automation
+
+### Custom Agents (`oh-my-opencode.json`)
+
+All agents and categories use `kimi-for-coding/k2p5` model:
+
+| Agent | Purpose |
+|-------|---------|
+| `build` | Building and compilation tasks |
+| `plan` | Planning and architecture |
+| `sisyphus` | Main orchestration agent |
+| `sisyphus-junior` | Delegated subtasks |
+| `OpenCode-Builder` | Code construction |
+| `prometheus` | Planning consultant |
+| `metis` | Pre-planning analysis |
+| `momus` | Quality assurance |
+| `oracle` | Complex debugging/architecture |
+| `librarian` | Documentation research |
+| `explore` | Codebase exploration |
+| `hephaestus` | Infrastructure/devops |
+| `frontend-ui-ux-engineer` | Frontend development |
+| `document-writer` | Documentation |
+| `multimodal-looker` | Media analysis |
+| `atlas` | Project mapping |
+
+**Categories:** visual-engineering, ultrabrain, artistry, quick, unspecified-low, unspecified-high, writing, deep
+
+### Development Guidelines (`AGENTS.md`)
+
+Rules for AI agents working in this codebase:
+- Separation of concerns and SRP
+- Layered architecture
+- Dependency inversion
+- Event-driven patterns
+- **Git workflow:** Mandatory commits, conventional commits format
+- **Testing:** Design for testability
+
+### Keybindings (`keymap.json`)
+
+| Key | Action |
+|-----|--------|
+| `Cmd+Æ` | Toggle assistant focus |
+| `Ctrl+Cmd+Right` | Quote selection to assistant |
+| `Ctrl+Cmd+Left` | Insert assistant response into editor |
