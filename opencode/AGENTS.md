@@ -68,3 +68,43 @@ Before considering a task complete:
 - [ ] Code reviewed (if required)
 - [ ] Changes committed with descriptive message
 - [ ] Working directory is clean (`git status` shows nothing to commit)
+
+
+
+## Privilege Escalation Protocol
+
+**OpenCode has NO sudo access and cannot run elevated commands.**
+
+When a task requires elevated privileges:
+
+1. **STOP** - Do NOT attempt to run `sudo` commands
+2. **Use the `question` tool** to request manual execution:
+   - Explain exactly what command needs to run
+   - Explain why it's needed
+   - Provide the exact command to copy/paste
+   - ONLY use PLAIN TEXT for the question. NEVER user Markdown syntax. 
+3. **Wait for confirmation** - Do not proceed until user explicitly confirms
+4. **Verify the result** (if applicable) - Check that the command succeeded
+5. **Continue** - Resume the task
+
+### Examples requiring manual execution:
+
+- Installing system packages: `sudo apt install`, `sudo pacman -S`
+- Starting system services: `sudo systemctl start <service>`
+- Modifying system configuration files in `/etc/`
+- Any operation that modifies system-wide state
+
+### Example workflow:
+
+OpenCode: I need to install PostgreSQL to set up the database.
+
+[Uses question tool]
+Title: Manual sudo required
+Question: Please run the following commands in your terminal to install PostgreSQL:
+
+sudo apt update
+sudo apt install postgresql postgresql-contrib
+
+Options: [Done]
+
+[User clicks Done] or [User types in their answer]
