@@ -13,5 +13,11 @@
       "command": ["npx", "@playwright/mcp@latest"],
       "enabled": true
     }
+  },
+  "permission": {
+    "bash": {
+      "*": "allow",
+      "sudo *": "ask"
+    }
   }
 }
