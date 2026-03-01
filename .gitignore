@@ -1,18 +1,1 @@
-# Ignore all files in the .config directory
-*
-node_modules/
-s
-
-# Allow directories for traversal
-!*/
-
-# Allow the following files / folders
-!pag
-!.gitignore
-!zed/*.json
-!opencode/*.*
-!README.md
-!fish/functions/*.fish
-
-#Ignore
-*backup*
+.local
