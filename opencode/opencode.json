@@ -12,6 +12,10 @@
       "playwright": {
         "type": "local",
         "command": ["npx", "@playwright/mcp@latest"]
+      },
+      "unreal-mcp": {
+        "type": "remote",
+        "url": "http://127.0.0.1:8000/mcp"
       }
     }
   },
