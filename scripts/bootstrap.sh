@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # Install shared + OS-specific dotfiles via symlinks.
+# omo.jsonc is linked so the repository remains the source of truth.
 #
 # Usage:
 #   ./scripts/bootstrap.sh              # shared + detected OS
@@ -96,12 +97,13 @@ link_file() {
 }
 
 # Map logical config key + relative path -> absolute destination under $HOME.
-# key: fish | git | niri | opencode | zed | bin | skills
+# key: fish | git | niri | omo | opencode | zed | bin | skills
 dest_for() {
   local key="$1"
   local rel="$2"
   case "$key" in
     bin)     echo "$HOME/.local/bin/${rel}" ;;
+    omo)     echo "$HOME/.omo/${rel}" ;;
     skills)  echo "$HOME/.config/opencode/skills/${rel}" ;;
     fish|git|niri|opencode|zed)
       echo "$HOME/.config/${key}/${rel}"
@@ -214,6 +216,7 @@ log "Profile:       $PROFILE"
 [[ "$DRY_RUN" -eq 1 ]] && log "(dry-run mode)"
 
 # --- shared ---
+link_pack "$ROOT/omo" "omo" "shared omo"
 link_pack "$ROOT/fish" "fish" "shared fish"
 link_pack "$ROOT/zed" "zed" "shared zed"
 if [[ -d "$ROOT/git" ]]; then

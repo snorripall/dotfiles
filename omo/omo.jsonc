@@ -1,0 +1,109 @@
+{
+  "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/omo.schema.json",
+  "categories": {
+    "architect": {
+      "models": [
+        { "model": "chatgpt-subscription/gpt-6-sol", "reasoning": "high" },
+        { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "high" }
+      ]
+    },
+    "artistry": {
+      "models": [
+        { "model": "chatgpt-subscription/gpt-6-sol", "reasoning": "high" },
+        { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "high" }
+      ]
+    },
+    "deep-low": {
+      "models": [
+        { "model": "chatgpt-subscription/gpt-6-sol", "reasoning": "high" },
+        { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "high" }
+      ]
+    },
+    "ultrabrain": {
+      "models": [
+        { "model": "chatgpt-subscription/gpt-6-sol", "reasoning": "xhigh" },
+        { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "high" }
+      ]
+    },
+    "unspecified-high": {
+      "models": [
+        { "model": "chatgpt-subscription/gpt-6-sol", "reasoning": "high" },
+        { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "high" }
+      ]
+    },
+    "visual-engineering": {
+      "models": [
+        { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "medium" },
+        { "model": "chatgpt-subscription/gpt-6-sol", "reasoning": "medium" }
+      ]
+    },
+    "writing": {
+      "models": [
+        { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "medium" },
+        { "model": "chatgpt-subscription/gpt-6-sol", "reasoning": "medium" }
+      ]
+    },
+    "quick": {
+      "models": [
+        { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "low" },
+        { "model": "chatgpt-subscription/gpt-6-sol", "reasoning": "low" }
+      ]
+    },
+    "unspecified-low": {
+      "models": [
+        { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "medium" },
+        { "model": "chatgpt-subscription/gpt-6-sol", "reasoning": "medium" }
+      ]
+    }
+  },
+  "agents": {
+    "explore": {
+      "models": [
+        { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "medium" },
+        { "model": "chatgpt-subscription/gpt-6-sol", "reasoning": "medium" }
+      ]
+    },
+    "librarian": {
+      "models": [
+        { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "medium" },
+        { "model": "chatgpt-subscription/gpt-6-sol", "reasoning": "medium" }
+      ]
+    },
+    "omo-senpi-code-reviewer": {
+      "models": [
+        { "model": "chatgpt-subscription/gpt-6-sol", "reasoning": "high" },
+        { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "high" }
+      ]
+    },
+    "omo-senpi-gate-reviewer": {
+      "models": [
+        { "model": "chatgpt-subscription/gpt-6-sol", "reasoning": "high" },
+        { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "high" }
+      ]
+    },
+    "omo-senpi-qa-executor": {
+      "models": [
+        { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "medium" },
+        { "model": "chatgpt-subscription/gpt-6-sol", "reasoning": "medium" }
+      ]
+    },
+    "plan-consultant": {
+      "models": [
+        { "model": "chatgpt-subscription/gpt-6-sol", "reasoning": "high" },
+        { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "high" }
+      ]
+    },
+    "plan-reviewer": {
+      "models": [
+        { "model": "chatgpt-subscription/gpt-6-sol", "reasoning": "high" },
+        { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "high" }
+      ]
+    }
+  },
+  "_migrations": [
+    "2026-07-opencode-config-unification",
+    "2026-08-reasoning-unification",
+    "2026-09-category-deep-split",
+    "2026-09-subscription-provider-rename"
+  ]
+}
