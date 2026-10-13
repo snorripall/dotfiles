@@ -2,3 +2,7 @@
 *.backup.*
 .env
 .env.*
+*.bak.*
+*.sync-conflict-*
+.omo/evidence/
+.omo/thread-tools/
