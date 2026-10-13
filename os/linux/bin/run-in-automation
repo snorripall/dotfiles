@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+# Launch a command and move its window(s) to the "automation" workspace
+# without stealing focus.
+# Usage: run-in-automation <command> [args...]
+#
+# Installed by: ./scripts/bootstrap.sh
+#   -> ~/.local/bin/run-in-automation
+
+set -euo pipefail
+
+if [ $# -eq 0 ]; then
+    echo "Usage: $0 <command> [args...]" >&2
+    exit 1
+fi
+
+current_ws=$(niri msg -j workspaces | jq -r 'first(.[] | select(.is_focused).name // select(.is_focused).idx | tostring) // "1"')
+
+"$@" &
+CHILD_PID=$!
+
+echo "[run-in-automation] Spawned PID $CHILD_PID: $*" >&2
+
+# Poll niri for windows matching our child PID
+max_attempts=150
+attempt=0
+moved=0
+
+while [ $attempt -lt $max_attempts ]; do
+    if [ $moved -eq 1 ] && ! kill -0 "$CHILD_PID" 2>/dev/null; then
+        break
+    fi
+
+    window_ids=$(niri msg -j windows 2>/dev/null \
+        | jq -r ".[] | select(.pid == $CHILD_PID) | .id" 2>/dev/null || true)
+
+    if [ -n "$window_ids" ]; then
+        for wid in $window_ids; do
+            echo "[run-in-automation] Moving window $wid (PID $CHILD_PID) to automation..." >&2
+            niri msg action move-window-to-workspace \
+                --window-id "$wid" \
+                --focus false \
+                "automation" 2>/dev/null || true
+            moved=1
+        done
+    fi
+
+    # Also check child processes (e.g., electron forks)
+    if [ $moved -eq 0 ]; then
+        for child_pid in $(pgrep -P "$CHILD_PID" 2>/dev/null || true); do
+            child_windows=$(niri msg -j windows 2>/dev/null \
+                | jq -r ".[] | select(.pid == $child_pid) | .id" 2>/dev/null || true)
+            if [ -n "$child_windows" ]; then
+                for wid in $child_windows; do
+                    echo "[run-in-automation] Moving window $wid (child PID $child_pid) to automation..." >&2
+                    niri msg action move-window-to-workspace \
+                        --window-id "$wid" \
+                        --focus false \
+                        "automation" 2>/dev/null || true
+                    moved=1
+                done
+            fi
+        done
+    fi
+
+    sleep 0.2
+    attempt=$((attempt + 1))
+done
+
+niri msg action focus-workspace "$current_ws" 2>/dev/null || true
+
+if [ $moved -eq 0 ]; then
+    echo "[run-in-automation] Warning: no window found for PID $CHILD_PID" >&2
+fi

@@ -1,0 +1,144 @@
+#!/usr/bin/env bash
+# Follow Steam Big Picture lifecycle events and toggle Xwayland's primary output.
+set -euo pipefail
+
+case "${1:-}" in
+    toggle)
+        exec systemctl --user kill --kill-whom=main --signal=USR1 steam-display-switcher.service
+        ;;
+    status)
+        exec xrandr --listmonitors
+        ;;
+    watch)
+        ;;
+    *)
+        printf 'Usage: %s {watch|toggle|status}\n' "$0" >&2
+        exit 2
+        ;;
+esac
+
+: "${STEAM_NORMAL_OUTPUT:?Set STEAM_NORMAL_OUTPUT in the service configuration}"
+: "${STEAM_TV_OUTPUT:?Set STEAM_TV_OUTPUT in the service configuration}"
+: "${STEAM_WORKSPACES:?Set STEAM_WORKSPACES in the service configuration}"
+
+declare -A bpm_windows=()
+tv_active=0
+bpm_active=0
+toggle_pending=0
+saved_primary=""
+saved_workspaces=""
+stream_pid=""
+
+restore_display() {
+    xrandr --output "$saved_primary" --primary || return
+    while IFS=$'\t' read -r workspace output; do
+        [[ -n "$workspace" ]] || continue
+        niri msg action move-workspace-to-monitor --reference "$workspace" "$output" || return
+    done <<< "$saved_workspaces"
+    tv_active=0
+    printf 'steam-display-switcher: primary=%s mode=normal\n' "$saved_primary"
+}
+
+activate_tv() {
+    saved_primary=$(xrandr --query | awk '$2 == "connected" && $3 == "primary" {print $1}')
+    saved_primary=${saved_primary:-$STEAM_NORMAL_OUTPUT}
+    saved_workspaces=$(niri msg -j workspaces | jq -r --arg names "$STEAM_WORKSPACES" '
+        .[] | select(.name != null and .output != null)
+        | select(.name as $name | $names | split(" ") | index($name))
+        | [.name, .output] | @tsv
+    ')
+    # Mark the transaction before applying it so an error restores the old state.
+    tv_active=1
+    xrandr --output "$STEAM_TV_OUTPUT" --primary
+    while IFS=$'\t' read -r workspace output; do
+        [[ -n "$workspace" ]] || continue
+        niri msg action move-workspace-to-monitor --reference "$workspace" "$STEAM_TV_OUTPUT"
+    done <<< "$saved_workspaces"
+    printf 'steam-display-switcher: primary=%s mode=tv\n' "$STEAM_TV_OUTPUT"
+}
+
+toggle_display() {
+    if (( tv_active )); then
+        restore_display
+    else
+        activate_tv
+    fi
+}
+
+cleanup() {
+    trap '' USR1
+    if (( tv_active )); then
+        restore_display || printf 'steam-display-switcher: failed to restore displays\n' >&2
+    fi
+    if [[ -n "$stream_pid" ]]; then
+        kill "$stream_pid" 2>/dev/null || :
+        wait "$stream_pid" 2>/dev/null || :
+    fi
+}
+
+trap cleanup EXIT
+trap 'exit 0' TERM INT
+trap 'toggle_pending=1' USR1
+
+coproc NIRI_EVENTS { exec niri msg -j event-stream; }
+stream_pid=$NIRI_EVENTS_PID
+exec {events_fd}<&"${NIRI_EVENTS[0]}"
+printf 'steam-display-switcher: watching Big Picture events\n'
+
+while :; do
+    if (( toggle_pending )); then
+        toggle_pending=0
+        toggle_display
+    fi
+    if IFS= read -r -u "$events_fd" event; then
+        kind=$(jq -r 'keys[0]' <<< "$event")
+    else
+        read_status=$?
+        # A manual-toggle signal interrupts read; EOF means the compositor is gone.
+        if (( read_status > 128 )); then
+            continue
+        fi
+        printf 'steam-display-switcher: compositor event stream closed\n' >&2
+        exit 1
+    fi
+
+    case "$kind" in
+        WindowsChanged)
+            bpm_windows=()
+            while read -r id; do
+                [[ -n "$id" ]] && bpm_windows["$id"]=1
+            done < <(jq -r '.WindowsChanged.windows[]
+                | select(.app_id == "steam" and .title == "Steam Big Picture Mode")
+                | .id' <<< "$event")
+            ;;
+        WindowOpenedOrChanged)
+            IFS=$'\t' read -r id is_bpm < <(jq -r '
+                .WindowOpenedOrChanged.window
+                | [.id, (.app_id == "steam" and .title == "Steam Big Picture Mode")]
+                | @tsv' <<< "$event")
+            if [[ "$is_bpm" == true ]]; then
+                bpm_windows["$id"]=1
+            else
+                unset 'bpm_windows[$id]'
+            fi
+            ;;
+        WindowClosed)
+            id=$(jq -r '.WindowClosed.id' <<< "$event")
+            unset 'bpm_windows[$id]'
+            ;;
+        *)
+            continue
+            ;;
+    esac
+
+    active=0
+    [[ -n "${bpm_windows[*]-}" ]] && active=1
+    if (( active != bpm_active )); then
+        bpm_active=$active
+        if (( bpm_active && ! tv_active )); then
+            activate_tv
+        elif (( ! bpm_active && tv_active )); then
+            restore_display
+        fi
+    fi
+done

@@ -1,0 +1,188 @@
+#!/usr/bin/env bash
+# Background daemon: automatically move windows spawned by coding agents
+# to the "automation" workspace, without stealing focus.
+#
+# How it works:
+#   1. Finds cgroup scopes of agent processes (pi, opencode, grok, zed)
+#   2. Polls niri every 500ms for windows
+#   3. If a window's PID is in an agent cgroup scope, moves it to automation
+#
+# Cgroup scopes survive re-parenting (unlike PID ancestry), so even apps
+# that fork and reparent to systemd are reliably detected.
+#
+# Detection:
+#   - Process name matches: pi, opencode, grok, zed, zed-editor, dev.zed.Zed
+#   - Or process has env var: AUTOMATION_AGENT=1
+#
+# Usage:
+#   agent-automation-daemon start    # Launch in background
+#   agent-automation-daemon stop     # Kill the daemon
+#   agent-automation-daemon status   # Check if running
+#
+# Auto-start from niri config:
+#   spawn-at-startup "agent-automation-daemon" "start"
+#
+# Installed by: ./scripts/bootstrap.sh -> ~/.local/bin/agent-automation-daemon
+
+APP_NAME="agent-automation-daemon"
+PIDFILE="/tmp/${APP_NAME}.pid"
+LOGFILE="/tmp/${APP_NAME}.log"
+TARGET="automation"
+
+log() { echo "[$APP_NAME] $*" >> "$LOGFILE"; }
+
+AGENT_NAMES=(pi opencode grok zed zed-editor "dev.zed.Zed")
+
+# App IDs that should NOT be moved (the agent's own windows)
+# The agent runs in kitty; zed is itself an agent tool.
+EXCLUDE_APP_IDS=(
+    "kitty"           # terminal where agents run
+    "dev.zed.Zed"     # zed editor (agent)
+    "zed-editor"      # zed processes
+)
+
+# ── Get cgroup scope from PID ───────────────────────────────────────
+get_cgroup_scope() {
+    local pid="$1"
+    local cg
+    cg=$(cat "/proc/$pid/cgroup" 2>/dev/null | head -1) || return 1
+    echo "${cg##*/}"
+}
+
+# ── Find unique agent cgroup scopes ─────────────────────────────────
+find_agent_scopes() {
+    {
+        for name in "${AGENT_NAMES[@]}"; do
+            while IFS= read -r pid; do
+                [ -n "$pid" ] && get_cgroup_scope "$pid"
+            done < <(pgrep -x "$name" 2>/dev/null || true)
+        done
+        for pid_dir in /proc/[0-9]*/environ; do
+            [ -r "$pid_dir" ] || continue
+            if tr '\0' '\n' < "$pid_dir" 2>/dev/null | grep -qsxF "AUTOMATION_AGENT=1"; then
+                pid="${pid_dir%/environ}"; pid="${pid##*/}"
+                get_cgroup_scope "$pid"
+            fi
+        done 2>/dev/null
+    } | sort -u
+}
+
+# ── Main daemon loop (simple polling) ───────────────────────────────
+daemon_main() {
+    log "Daemon started, target workspace: '$TARGET'"
+    log "Monitoring agents: ${AGENT_NAMES[*]}"
+
+    # Track moved window IDs to avoid re-processing
+    declare -A MOVED
+
+    while true; do
+        # Refresh agent scopes periodically
+        local scopes=()
+        while IFS= read -r s; do
+            scopes+=("$s")
+        done < <(find_agent_scopes)
+
+        if [ ${#scopes[@]} -gt 0 ]; then
+            # Get all windows from niri
+            local windows
+            windows=$(niri msg -j windows 2>/dev/null || echo "[]")
+
+            # Check each window
+            while IFS= read -r win; do
+                [ -z "$win" ] && continue
+                local wid pid app_id
+                wid=$(echo "$win" | jq -r '.id // empty')
+                pid=$(echo "$win" | jq -r '.pid // empty')
+                app_id=$(echo "$win" | jq -r '.app_id // empty')
+                [ -z "$wid" ] || [ -z "$pid" ] || [ "$pid" = "null" ] && continue
+
+                # Skip windows that ARE the agent (terminal, zed itself, etc.)
+                local skip=0
+                for excl in "${EXCLUDE_APP_IDS[@]}"; do
+                    if [ "$app_id" = "$excl" ]; then
+                        skip=1
+                        break
+                    fi
+                done
+                [ "$skip" = 1 ] && continue
+
+                # Skip if already moved
+                [ "${MOVED[$wid]:-0}" = 1 ] && continue
+
+                # Check if this PID belongs to an agent cgroup scope
+                local win_scope
+                win_scope=$(get_cgroup_scope "$pid" 2>/dev/null) || continue
+
+                local found=0
+                for s in "${scopes[@]}"; do
+                    if [ "$win_scope" = "$s" ]; then
+                        found=1
+                        break
+                    fi
+                done
+
+                if [ "$found" = 1 ]; then
+                    log "Moved window $wid (PID $pid, scope $win_scope) → $TARGET"
+                    niri msg action move-window-to-workspace \
+                        --window-id "$wid" \
+                        --focus false \
+                        "$TARGET" 2>/dev/null || true
+                    MOVED[$wid]=1
+                fi
+            done < <(echo "$windows" | jq -c '.[]' 2>/dev/null)
+        fi
+
+        sleep 0.5
+    done
+}
+
+# ── Control interface ───────────────────────────────────────────────
+start() {
+    if [ -f "$PIDFILE" ] && kill -0 "$(cat "$PIDFILE")" 2>/dev/null; then
+        echo "[$APP_NAME] Already running (PID $(cat "$PIDFILE"))."
+        exit 0
+    fi
+
+    nohup bash -c "
+        source \"$0\" --daemon
+    " >> "$LOGFILE" 2>&1 &
+
+    local pid=$!
+    echo "$pid" > "$PIDFILE"
+    echo "[$APP_NAME] Started (PID $pid). Log: $LOGFILE"
+}
+
+stop() {
+    if [ -f "$PIDFILE" ]; then
+        kill "$(cat "$PIDFILE")" 2>/dev/null || true
+        rm -f "$PIDFILE"
+        echo "[$APP_NAME] Stopped."
+    else
+        echo "[$APP_NAME] Not running."
+    fi
+}
+
+status() {
+    if [ -f "$PIDFILE" ] && kill -0 "$(cat "$PIDFILE")" 2>/dev/null; then
+        local scopes=()
+        while IFS= read -r s; do scopes+=("$s"); done < <(find_agent_scopes)
+        echo "[$APP_NAME] Running (PID $(cat "$PIDFILE"))."
+        echo "  Agent cgroup scopes: ${scopes[*]:-(none detected)}"
+    else
+        echo "[$APP_NAME] Not running."
+    fi
+}
+
+# ── Entry ───────────────────────────────────────────────────────────
+if [ "${1:-}" = "--daemon" ]; then
+    daemon_main
+    exit 0
+fi
+
+case "${1:-status}" in
+    start)   start ;;
+    stop)    stop ;;
+    status)  status ;;
+    restart) stop; sleep 0.5; start ;;
+    *) echo "Usage: $0 {start|stop|status|restart}"; exit 1 ;;
+esac

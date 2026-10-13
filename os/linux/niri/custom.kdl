@@ -21,6 +21,15 @@ layout {
     }
 }
 
+// === AUTO-START: Agent Automation Daemon (disabled) ===
+// Routes windows spawned by coding agents to the "automation" workspace
+// spawn-at-startup "agent-automation-daemon" "start"
+
+// The dummy HDMI dongle advertises 1080p as preferred despite supporting 4K.
+output "HDMI-A-1" {
+    mode "3840x2160@59.940"
+}
+
 // === WINDOW RULES ===
 // Chromium: automation workspace, don't steal focus
 window-rule {
@@ -36,6 +45,18 @@ window-rule {
     exclude title=r"^$"
     open-on-workspace "gaming-stream"
     open-fullscreen true
+}
+
+// Steam Big Picture Mode: run fullscreen on the TV (HDMI-A-1)
+workspace "bigpicture" {
+    open-on-output "HDMI-A-1"
+}
+
+window-rule {
+    match app-id="steam" title="Steam Big Picture Mode"
+    open-on-workspace "bigpicture"
+    open-fullscreen true
+    open-focused true
 }
 
 // Slay the Spire 2: gaming-stream with fullscreen
@@ -55,7 +76,17 @@ window-rule {
 }
 
 // === KEYBINDS: Custom shortcuts ===
+// Keep capture approval visible even when Steam is on the dummy HDMI output.
+window-rule {
+    match app-id="xdg-desktop-portal-gnome" title="Share Screen"
+    open-on-output "DP-2"
+    open-focused true
+}
+
 binds {
+    Ctrl+F8 repeat=false allow-inhibiting=false hotkey-overlay-title="Toggle Steam primary display" {
+        spawn "steam-display-switcher" "toggle" ;
+    }
     // Reload Niri config
     Mod+F5 hotkey-overlay-title="Reload Niri config" {
  

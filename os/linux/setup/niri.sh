@@ -39,5 +39,12 @@ if [[ -f "$NIRI_CONFIG_DIR/config.kdl" ]] && ! grep -q 'include "custom.kdl"' "$
 fi
 
 echo ""
+echo "Also installed:"
+echo "  ~/.local/bin/run-in-automation        - wrapper to spawn apps on automation workspace"
+echo "  ~/.local/bin/agent-automation-daemon  - daemon to auto-route agent-spawned windows"
+echo ""
+echo "The daemon auto-starts via spawn-at-startup in custom.kdl."
+echo "Manual control: agent-automation-daemon {start|stop|status|restart}"
+echo ""
 echo "Niri custom configuration setup complete."
 echo "Reload with: Mod+F5"
