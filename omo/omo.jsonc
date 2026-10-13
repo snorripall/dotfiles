@@ -3,56 +3,62 @@
   "categories": {
     "architect": {
       "models": [
-        { "model": "chatgpt-subscription/gpt-6-sol", "reasoning": "high" },
+        { "model": "chatgpt-subscription/gpt-6.1-sol", "reasoning": "high" },
         { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "high" }
       ]
     },
     "artistry": {
       "models": [
-        { "model": "chatgpt-subscription/gpt-6-sol", "reasoning": "high" },
+        { "model": "chatgpt-subscription/gpt-6.1-sol", "reasoning": "high" },
         { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "high" }
       ]
     },
     "deep-low": {
       "models": [
-        { "model": "chatgpt-subscription/gpt-6-sol", "reasoning": "high" },
+        { "model": "chatgpt-subscription/gpt-6.1-sol", "reasoning": "high" },
+        { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "high" }
+      ]
+    },
+    "deep-high": {
+      "models": [
+        { "model": "chatgpt-subscription/gpt-6.1-sol", "reasoning": "high" },
         { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "high" }
       ]
     },
     "ultrabrain": {
       "models": [
-        { "model": "chatgpt-subscription/gpt-6-sol", "reasoning": "xhigh" },
+        { "model": "chatgpt-subscription/gpt-6.1-sol", "reasoning": "xhigh" },
         { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "high" }
       ]
     },
     "unspecified-high": {
       "models": [
-        { "model": "chatgpt-subscription/gpt-6-sol", "reasoning": "high" },
+        { "model": "chatgpt-subscription/gpt-6.1-sol", "reasoning": "high" },
         { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "high" }
       ]
     },
     "visual-engineering": {
       "models": [
         { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "medium" },
-        { "model": "chatgpt-subscription/gpt-6-sol", "reasoning": "medium" }
+        { "model": "chatgpt-subscription/gpt-6.1-sol", "reasoning": "medium" }
       ]
     },
     "writing": {
       "models": [
         { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "medium" },
-        { "model": "chatgpt-subscription/gpt-6-sol", "reasoning": "medium" }
+        { "model": "chatgpt-subscription/gpt-6.1-sol", "reasoning": "medium" }
       ]
     },
     "quick": {
       "models": [
         { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "low" },
-        { "model": "chatgpt-subscription/gpt-6-sol", "reasoning": "low" }
+        { "model": "chatgpt-subscription/gpt-6.1-sol", "reasoning": "low" }
       ]
     },
     "unspecified-low": {
       "models": [
         { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "medium" },
-        { "model": "chatgpt-subscription/gpt-6-sol", "reasoning": "medium" }
+        { "model": "chatgpt-subscription/gpt-6.1-sol", "reasoning": "medium" }
       ]
     }
   },
@@ -60,42 +66,42 @@
     "explore": {
       "models": [
         { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "medium" },
-        { "model": "chatgpt-subscription/gpt-6-sol", "reasoning": "medium" }
+        { "model": "chatgpt-subscription/gpt-6.1-sol", "reasoning": "medium" }
       ]
     },
     "librarian": {
       "models": [
         { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "medium" },
-        { "model": "chatgpt-subscription/gpt-6-sol", "reasoning": "medium" }
+        { "model": "chatgpt-subscription/gpt-6.1-sol", "reasoning": "medium" }
       ]
     },
     "omo-senpi-code-reviewer": {
       "models": [
-        { "model": "chatgpt-subscription/gpt-6-sol", "reasoning": "high" },
+        { "model": "chatgpt-subscription/gpt-6.1-sol", "reasoning": "high" },
         { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "high" }
       ]
     },
     "omo-senpi-gate-reviewer": {
       "models": [
-        { "model": "chatgpt-subscription/gpt-6-sol", "reasoning": "high" },
+        { "model": "chatgpt-subscription/gpt-6.1-sol", "reasoning": "high" },
         { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "high" }
       ]
     },
     "omo-senpi-qa-executor": {
       "models": [
         { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "medium" },
-        { "model": "chatgpt-subscription/gpt-6-sol", "reasoning": "medium" }
+        { "model": "chatgpt-subscription/gpt-6.1-sol", "reasoning": "medium" }
       ]
     },
     "plan-consultant": {
       "models": [
-        { "model": "chatgpt-subscription/gpt-6-sol", "reasoning": "high" },
+        { "model": "chatgpt-subscription/gpt-6.1-sol", "reasoning": "high" },
         { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "high" }
       ]
     },
     "plan-reviewer": {
       "models": [
-        { "model": "chatgpt-subscription/gpt-6-sol", "reasoning": "high" },
+        { "model": "chatgpt-subscription/gpt-6.1-sol", "reasoning": "high" },
         { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "high" }
       ]
     }
