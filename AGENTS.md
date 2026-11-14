@@ -46,7 +46,7 @@ dotfiles/
 - `scripts/bootstrap.sh --dry-run` reports intended changes, although destination parent directories may still be created.
 - OpenCode configuration is `opencode/opencode.json` deep-merged with `os/<platform>/opencode/opencode.overlay.json`.
 - Native OMO configuration goes directly to `~/.omo/omo.json`, not `~/.config/omo`.
-- OMO `models` arrays are ordered fallback chains; high-complexity roles lead with GPT-5.6 Sol.
+- OMO `models` arrays are ordered fallback chains; routing uses Claude Pro subscription models only (Haiku/Sonnet/Opus 5.5), with Fable and per-usage providers excluded.
 - OpenCode profiles describe model roles independently of the operating system.
 - Fish loads shared `config.fish`, `conf.d/*.fish`, and `functions/`; do not fold OS snippets into the shared entrypoint.
 - `scripts/env-sync.sh` emits shell code on stdout and diagnostics on stderr; wrappers source or eval only that output.

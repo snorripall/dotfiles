@@ -1,115 +1,287 @@
 {
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/omo.schema.json",
+  "computer": {
+    "allow_host_relay_only_stop": true
+  },
+  "model_profile": "daily-normal",
+  "model_profiles": {
+    "daily-normal": {
+      "family": "daily",
+      "tier": "normal",
+      "models": [
+        {
+          "model": "anthropic-subscription/claude-sonnet-5-5",
+          "reasoning": "medium"
+        },
+        {
+          "model": "anthropic-subscription/claude-opus-5-5",
+          "reasoning": "medium"
+        }
+      ]
+    },
+    "daily-heavy": {
+      "family": "daily",
+      "tier": "heavy",
+      "models": [
+        {
+          "model": "anthropic-subscription/claude-opus-5-5",
+          "reasoning": "medium"
+        },
+        {
+          "model": "anthropic-subscription/claude-sonnet-5-5",
+          "reasoning": "high"
+        }
+      ]
+    },
+    "geeky-normal": {
+      "family": "geeky",
+      "tier": "normal",
+      "models": [
+        {
+          "model": "anthropic-subscription/claude-opus-5-5",
+          "reasoning": "medium"
+        },
+        {
+          "model": "anthropic-subscription/claude-sonnet-5-5",
+          "reasoning": "high"
+        }
+      ]
+    },
+    "geeky-heavy": {
+      "family": "geeky",
+      "tier": "heavy",
+      "models": [
+        {
+          "model": "anthropic-subscription/claude-opus-5-5",
+          "reasoning": "high"
+        },
+        {
+          "model": "anthropic-subscription/claude-sonnet-5-5",
+          "reasoning": "high"
+        }
+      ]
+    }
+  },
   "categories": {
-    "architect": {
+    "quick": {
       "models": [
-        { "model": "chatgpt-subscription/gpt-6.1-sol", "reasoning": "high" },
-        { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "high" }
-      ]
-    },
-    "artistry": {
-      "models": [
-        { "model": "chatgpt-subscription/gpt-6.1-sol", "reasoning": "high" },
-        { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "high" }
-      ]
-    },
-    "deep-low": {
-      "models": [
-        { "model": "chatgpt-subscription/gpt-6.1-sol", "reasoning": "high" },
-        { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "high" }
-      ]
-    },
-    "deep-high": {
-      "models": [
-        { "model": "chatgpt-subscription/gpt-6.1-sol", "reasoning": "high" },
-        { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "high" }
-      ]
-    },
-    "ultrabrain": {
-      "models": [
-        { "model": "chatgpt-subscription/gpt-6.1-sol", "reasoning": "xhigh" },
-        { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "high" }
-      ]
-    },
-    "unspecified-high": {
-      "models": [
-        { "model": "chatgpt-subscription/gpt-6.1-sol", "reasoning": "high" },
-        { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "high" }
-      ]
-    },
-    "visual-engineering": {
-      "models": [
-        { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "medium" },
-        { "model": "chatgpt-subscription/gpt-6.1-sol", "reasoning": "medium" }
+        {
+          "model": "anthropic-subscription/claude-haiku-5-5",
+          "reasoning": "low"
+        },
+        {
+          "model": "anthropic-subscription/claude-sonnet-5-5",
+          "reasoning": "low"
+        }
       ]
     },
     "writing": {
       "models": [
-        { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "medium" },
-        { "model": "chatgpt-subscription/gpt-6.1-sol", "reasoning": "medium" }
-      ]
-    },
-    "quick": {
-      "models": [
-        { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "low" },
-        { "model": "chatgpt-subscription/gpt-6.1-sol", "reasoning": "low" }
+        {
+          "model": "anthropic-subscription/claude-sonnet-5-5",
+          "reasoning": "medium"
+        },
+        {
+          "model": "anthropic-subscription/claude-haiku-5-5",
+          "reasoning": "medium"
+        }
       ]
     },
     "unspecified-low": {
       "models": [
-        { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "medium" },
-        { "model": "chatgpt-subscription/gpt-6.1-sol", "reasoning": "medium" }
+        {
+          "model": "anthropic-subscription/claude-sonnet-5-5",
+          "reasoning": "medium"
+        },
+        {
+          "model": "anthropic-subscription/claude-haiku-5-5",
+          "reasoning": "medium"
+        }
+      ]
+    },
+    "visual-engineering": {
+      "models": [
+        {
+          "model": "anthropic-subscription/claude-sonnet-5-5",
+          "reasoning": "medium"
+        },
+        {
+          "model": "anthropic-subscription/claude-opus-5-5",
+          "reasoning": "medium"
+        }
+      ]
+    },
+    "deep-low": {
+      "models": [
+        {
+          "model": "anthropic-subscription/claude-sonnet-5-5",
+          "reasoning": "medium"
+        },
+        {
+          "model": "anthropic-subscription/claude-opus-5-5",
+          "reasoning": "medium"
+        }
+      ]
+    },
+    "unspecified-high": {
+      "models": [
+        {
+          "model": "anthropic-subscription/claude-sonnet-5-5",
+          "reasoning": "high"
+        },
+        {
+          "model": "anthropic-subscription/claude-opus-5-5",
+          "reasoning": "medium"
+        }
+      ]
+    },
+    "artistry": {
+      "models": [
+        {
+          "model": "anthropic-subscription/claude-sonnet-5-5",
+          "reasoning": "high"
+        },
+        {
+          "model": "anthropic-subscription/claude-opus-5-5",
+          "reasoning": "medium"
+        }
+      ]
+    },
+    "deep-high": {
+      "models": [
+        {
+          "model": "anthropic-subscription/claude-opus-5-5",
+          "reasoning": "medium"
+        },
+        {
+          "model": "anthropic-subscription/claude-sonnet-5-5",
+          "reasoning": "high"
+        }
+      ]
+    },
+    "architect": {
+      "models": [
+        {
+          "model": "anthropic-subscription/claude-opus-5-5",
+          "reasoning": "medium"
+        },
+        {
+          "model": "anthropic-subscription/claude-sonnet-5-5",
+          "reasoning": "high"
+        }
+      ]
+    },
+    "ultrabrain": {
+      "models": [
+        {
+          "model": "anthropic-subscription/claude-opus-5-5",
+          "reasoning": "high"
+        },
+        {
+          "model": "anthropic-subscription/claude-sonnet-5-5",
+          "reasoning": "high"
+        }
       ]
     }
   },
   "agents": {
     "explore": {
       "models": [
-        { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "medium" },
-        { "model": "chatgpt-subscription/gpt-6.1-sol", "reasoning": "medium" }
+        {
+          "model": "anthropic-subscription/claude-haiku-5-5",
+          "reasoning": "medium"
+        },
+        {
+          "model": "anthropic-subscription/claude-sonnet-5-5",
+          "reasoning": "medium"
+        }
       ]
     },
     "librarian": {
       "models": [
-        { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "medium" },
-        { "model": "chatgpt-subscription/gpt-6.1-sol", "reasoning": "medium" }
-      ]
-    },
-    "omo-senpi-code-reviewer": {
-      "models": [
-        { "model": "chatgpt-subscription/gpt-6.1-sol", "reasoning": "high" },
-        { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "high" }
-      ]
-    },
-    "omo-senpi-gate-reviewer": {
-      "models": [
-        { "model": "chatgpt-subscription/gpt-6.1-sol", "reasoning": "high" },
-        { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "high" }
+        {
+          "model": "anthropic-subscription/claude-haiku-5-5",
+          "reasoning": "medium"
+        },
+        {
+          "model": "anthropic-subscription/claude-sonnet-5-5",
+          "reasoning": "medium"
+        }
       ]
     },
     "omo-senpi-qa-executor": {
       "models": [
-        { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "medium" },
-        { "model": "chatgpt-subscription/gpt-6.1-sol", "reasoning": "medium" }
+        {
+          "model": "anthropic-subscription/claude-haiku-5-5",
+          "reasoning": "medium"
+        },
+        {
+          "model": "anthropic-subscription/claude-sonnet-5-5",
+          "reasoning": "medium"
+        }
+      ]
+    },
+    "omo-senpi-code-reviewer": {
+      "models": [
+        {
+          "model": "anthropic-subscription/claude-sonnet-5-5",
+          "reasoning": "medium"
+        },
+        {
+          "model": "anthropic-subscription/claude-opus-5-5",
+          "reasoning": "medium"
+        }
+      ]
+    },
+    "omo-senpi-gate-reviewer": {
+      "models": [
+        {
+          "model": "anthropic-subscription/claude-sonnet-5-5",
+          "reasoning": "medium"
+        },
+        {
+          "model": "anthropic-subscription/claude-opus-5-5",
+          "reasoning": "medium"
+        }
       ]
     },
     "plan-consultant": {
       "models": [
-        { "model": "chatgpt-subscription/gpt-6.1-sol", "reasoning": "high" },
-        { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "high" }
+        {
+          "model": "anthropic-subscription/claude-sonnet-5-5",
+          "reasoning": "medium"
+        },
+        {
+          "model": "anthropic-subscription/claude-opus-5-5",
+          "reasoning": "medium"
+        }
       ]
     },
     "plan-reviewer": {
       "models": [
-        { "model": "chatgpt-subscription/gpt-6.1-sol", "reasoning": "high" },
-        { "model": "chatgpt-subscription/gpt-6-luna-fast", "reasoning": "high" }
+        {
+          "model": "anthropic-subscription/claude-sonnet-5-5",
+          "reasoning": "medium"
+        },
+        {
+          "model": "anthropic-subscription/claude-opus-5-5",
+          "reasoning": "medium"
+        }
       ]
     }
   },
+  // Claude Pro only: Fable bills usage credits on Pro; ChatGPT is no longer used.
+  "exclude_models": [
+    "claude-fable-*",
+    "chatgpt-subscription/*"
+  ],
   "_migrations": [
     "2026-07-opencode-config-unification",
     "2026-08-reasoning-unification",
     "2026-09-category-deep-split",
     "2026-09-subscription-provider-rename"
-  ]
+  ],
+  "telemetry": {
+    "enabled": true
+  }
 }
