@@ -21,6 +21,10 @@ Given the programming language you are working with, ignore any rules that make 
 - Use events for decoupling: Apply event-driven patterns for communication across concerns instead of direct calls.
 
 # Testing
+* Spend no more than about 10% of a task's token budget on testing, including test planning, writing tests, running checks, and analyzing results.
+* Be very sparse: use the smallest targeted checks that verify observable outcomes. Reuse valid existing results; avoid repeated suites and elaborate test harnesses.
+* Do not run load, stress, or capacity testing unless the user explicitly requests it.
+* Report actual outcomes and any unverified gaps briefly. Never claim an unrun check passed. Prose-only changes need no tests.
 * Use playwright mcp to test anything that requires a browser. 
 
 ## Git Workflow
