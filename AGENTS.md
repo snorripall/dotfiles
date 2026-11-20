@@ -1,7 +1,7 @@
 # PROJECT KNOWLEDGE BASE
 
-**Generated:** 2026-09-18T10:21:13Z
-**Commit:** 5490ba3
+**Generated:** 2026-11-20T00:00:00Z
+**Commit:** cd36110
 **Branch:** main
 
 ## OVERVIEW
@@ -14,12 +14,13 @@ Shell scripts deploy shared configuration, platform overlays, OpenCode settings,
 ```text
 dotfiles/
 ├── fish/                 # Shared Fish entrypoint, abbreviations, and functions
-├── omo/                  # Native ~/.omo/omo.json agent and category routing
+├── omo/                  # Native ~/.omo/omo.jsonc agent and category routing
 ├── opencode/             # Shared OpenCode base, profiles, and deployed global policy
 ├── os/
 │   ├── linux/            # CachyOS, Niri, helpers, skills, and one-shot setup
 │   └── macos/            # Fish/Zsh, Zed, and OpenCode platform overlays
-├── scripts/              # Bootstrap, secret sync, profile switching, token reports
+├── scripts/              # Bootstrap, secret sync, profile switching
+│   └── tokens/           # tokens.py: OpenCode and Grok token usage reporter
 └── zed/                  # Shared editor settings
 ```
 
@@ -29,13 +30,14 @@ dotfiles/
 |------|----------|-------|
 | Install or relink dotfiles | `scripts/bootstrap.sh` | Shared packs first, then detected or forced OS pack |
 | Map pack files to destinations | `scripts/bootstrap.sh` `dest_for`, `link_pack` | OMO is the only pack installed under `~/.omo` |
-| Change native OMO routing | `omo/omo.json` | Ordered `models` arrays are primary-to-fallback chains |
+| Change native OMO routing | `omo/omo.jsonc` | Ordered `models` arrays are primary-to-fallback chains |
 | Change OpenCode defaults | `opencode/opencode.json` | Base merged with an OS overlay when `jq` exists |
 | Change local model profile | `opencode/profiles/homelab.json` | Installed as `oh-my-openagent.json` |
 | Switch an installed profile | `scripts/opencode-profile.sh` | Symlink-only switch with timestamped backup |
 | Sync API keys | `scripts/env-sync.sh` | Bitwarden core; Fish and Zsh wrappers consume stdout |
 | Change shared Fish behavior | `fish/` | OS-specific snippets belong under `os/<platform>/fish/conf.d` |
-| Change Niri automation | `os/linux/niri/`, `os/linux/bin/` | Custom KDL plus launcher and routing daemon |
+| Change Niri automation | `os/linux/niri/`, `os/linux/bin/` | Custom KDL (incl. Hex dictation and Steam display binds), `run-in-automation`, `agent-automation-daemon`, `steam-display-switcher` |
+| Report token usage | `scripts/tokens/tokens.py` | `opencode`, `grok`, `all` subcommands; reads local OpenCode SQLite DB and Grok logs |
 | Configure Linux SSH/KWallet | `os/linux/setup/ssh.sh` | Interactive, privileged, and CachyOS/Arch-specific |
 | Change global agent policy payload | `opencode/AGENTS.md` | Deployed to `~/.config/opencode/AGENTS.md`; not a subtree guide |
 
@@ -45,7 +47,7 @@ dotfiles/
 - Deployment is symlink-first. A real destination is moved to `.backup.<timestamp>` before replacement.
 - `scripts/bootstrap.sh --dry-run` reports intended changes, although destination parent directories may still be created.
 - OpenCode configuration is `opencode/opencode.json` deep-merged with `os/<platform>/opencode/opencode.overlay.json`.
-- Native OMO configuration goes directly to `~/.omo/omo.json`, not `~/.config/omo`.
+- Native OMO configuration goes directly to `~/.omo/omo.jsonc`, not `~/.config/omo`.
 - OMO `models` arrays are ordered fallback chains; routing uses Claude Pro subscription models only (Haiku/Sonnet/Opus 5.5), with Fable and per-usage providers excluded.
 - OpenCode profiles describe model roles independently of the operating system.
 - Fish loads shared `config.fish`, `conf.d/*.fish`, and `functions/`; do not fold OS snippets into the shared entrypoint.
@@ -63,8 +65,9 @@ dotfiles/
 
 ## UNIQUE STYLES
 
-- Native OMO routing uses GPT-5.6 Sol for high-reasoning roles, Luna Fast for cheaper roles, and homelab Qwen as final fallback.
+- Native OMO routing uses only `anthropic-subscription` Claude models: Opus 5.5 for high-reasoning roles, Sonnet 5.5 mid-tier, Haiku 5.5 for cheap roles.
 - Linux Niri automation uses a dedicated workspace, a launcher wrapper, and a daemon that routes spawned windows.
+- The daemon detects agent processes (pi, opencode, grok, zed) by cgroup scope or `AUTOMATION_AGENT=1`, polling Niri every 500ms.
 - OpenCode browser configuration differs by OS only through overlays; Linux pins `/usr/lib/chromium/chromium`.
 - SSH host entries are managed as `~/.ssh/config.d/` drop-ins instead of replacing the main config.
 
@@ -91,7 +94,8 @@ env-sync --force
 ## NOTES
 
 - `scripts/bootstrap.sh` currently lacks an executable bit; invoke it through `bash`.
-- The tracked `cloud` profile is currently absent, so bootstrap's default profile fails unless a profile is supplied.
+- The `cloud` profile was removed, but `bootstrap.sh` still defaults `PROFILE` to `cloud`, so it fails unless `--profile` is supplied.
+- `fish/config.fish` receives installer-appended snippets (grok, bun, opencode PATH); keep them outside OS-specific logic.
 - Missing `jq` causes bootstrap to link only the OpenCode base and skip the platform overlay.
 - No repository-specific automated test or lint command is defined; use syntax checks and bootstrap dry-run.
 - Semantic reference counts are unmeasured because Bash LSP and ast-grep are unavailable in this checkout.
