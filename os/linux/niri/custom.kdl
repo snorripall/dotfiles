@@ -84,6 +84,14 @@ window-rule {
 }
 
 binds {
+    // Hex cannot register shortcuts through the GlobalShortcuts portal on niri.
+    // Press to start dictation, press again to stop. Niri has no key-release binds.
+    Alt+Space repeat=false hotkey-overlay-title="Hex dictation" {
+        spawn "hex" "dictation" "toggle" ;
+    }
+    Ctrl+Alt+V repeat=false hotkey-overlay-title="Hex paste last" {
+        spawn "hex" "paste-last" ;
+    }
     Ctrl+F8 repeat=false allow-inhibiting=false hotkey-overlay-title="Toggle Steam primary display" {
         spawn "steam-display-switcher" "toggle" ;
     }
